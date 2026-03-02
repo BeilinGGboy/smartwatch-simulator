@@ -1,0 +1,38 @@
+# Binaries
+smartwatch-simulator
+# Only ignore root-level simulator binary, not simulator/ source directory
+/simulator
+simulator/main
+!simulator/
+!simulator/**
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
