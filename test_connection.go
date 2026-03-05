@@ -5,12 +5,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 )
 
-// 测试服务器连接
+// 测试服务器连接（仅发送 3 条数据，用于验证数据库写入）
 func main() {
-	serverURL := "http://192.168.0.102:8080"
+	serverURL := os.Getenv("SERVER_URL")
+	if serverURL == "" {
+		serverURL = "http://localhost:8080"
+	}
 	
 	fmt.Println("========================================")
 	fmt.Println("   服务器连接测试")
@@ -33,27 +37,43 @@ func main() {
 	}
 	fmt.Println()
 	
-	// 2. 测试批量上传接口
-	fmt.Println("2. 测试批量上传接口...")
+	// 2. 测试批量上传接口（仅 3 条数据，用于验证数据库写入）
+	fmt.Println("2. 测试批量上传接口（3 条测试数据）...")
+	now := time.Now()
+	sleepStart := now.Add(-8 * time.Hour)
+	sleepEnd := now.Add(-2 * time.Hour)
 	testData := []map[string]interface{}{
 		{
 			"device_id": "test-device-001",
 			"user_id":   1001,
-			"timestamp": time.Now().Format(time.RFC3339),
+			"timestamp": now.Format(time.RFC3339),
 			"heart_rate": map[string]interface{}{
 				"bpm":       75,
-				"timestamp": time.Now().Format(time.RFC3339),
+				"timestamp": now.Format(time.RFC3339),
 			},
 		},
 		{
 			"device_id": "test-device-001",
 			"user_id":   1001,
-			"timestamp": time.Now().Format(time.RFC3339),
+			"timestamp": now.Format(time.RFC3339),
 			"steps": map[string]interface{}{
 				"steps":     1000,
 				"distance":  700.0,
 				"calories":  30,
-				"timestamp": time.Now().Format(time.RFC3339),
+				"timestamp": now.Format(time.RFC3339),
+			},
+		},
+		{
+			"device_id": "test-device-001",
+			"user_id":   1001,
+			"timestamp": now.Format(time.RFC3339),
+			"sleep": map[string]interface{}{
+				"sleep_start":   sleepStart.Format(time.RFC3339),
+				"sleep_end":     sleepEnd.Format(time.RFC3339),
+				"duration":      360,
+				"deep_sleep":    120,
+				"light_sleep":   240,
+				"sleep_quality": 85,
 			},
 		},
 	}
